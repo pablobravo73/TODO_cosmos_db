@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  h1= title
+  br
+
+  form(action="/completar", method="post")
+    table.table.tablestripped.table-bordered 
+      tr
+        td Nombre 
+        td Categoria 
+        td Fecha
+        td Complete 
+      if(typeof task ==="undefined")
+        tr
+          td
+        else 
+          each task in tasks 
+            tr 
+              td #{task.name}
+              td #{task.category}
+              - var date = new Date(task.date);
+              - var day = date.getDate();
+              - var month = date.getMonth() + 1;
+              - var year = date.getFullYear();
+              td #{day + "/" + month + "/" + year}
+              td
+                if (task.completed)
+                  input(type="checkbox", name="#{task.id}", value="#{!task.completed}", checked=task.completed) 
+                else
+                  input(type="checkbox", name="#{task.id}", value="#{!task.completed}", checked=task.completed)
+          button.btn.btn-primary(type="submit") Actualizar tareas 
+        hr
+        form.well(action="/agregar", method="post")
+          label Item Name: 
+          input(name="name", type="textbox")
+          label Item Category: 
+          input(name="category", type="textbox")
+          brbutton.btn(type="submit") Añadir tarea
